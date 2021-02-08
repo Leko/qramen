@@ -47,7 +47,7 @@ function App() {
   return (
     <div className="App">
       <header className="brand">
-        <img src={logo} className="brand-logo" />
+        <img src={logo} alt="QRamen" className="brand-logo" />
         <h1 className="brand-title">QRamen</h1>
       </header>
       <main className="main">
