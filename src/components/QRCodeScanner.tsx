@@ -38,6 +38,7 @@ export function QRCodeScanner(props: Props) {
       if (!hasCompatibility || !videoRef.current) {
         return
       }
+      let track: MediaStreamTrack | null = null
       getBackCameraStream().then((mediaStream) => {
         function detectloop() {
           detect(videoRef.current)
@@ -47,10 +48,15 @@ export function QRCodeScanner(props: Props) {
             })
         }
 
+        track = mediaStream.getVideoTracks()[0]
         videoRef.current!.srcObject = mediaStream
         // Wait until the video is ready
         videoRef.current?.addEventListener('playing', detectloop)
       })
+
+      return () => {
+        track?.stop()
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [hasCompatibility, videoRef]
