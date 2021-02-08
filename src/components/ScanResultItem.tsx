@@ -13,12 +13,7 @@ export function ScanResultItem(props: Props) {
       className="scan-result-item-wrap"
       style={{ borderLeftColor: barcode.hashColor }}
     >
-      <a
-        className="scan-result-item"
-        href={barcode.rawValue}
-        target="_blank"
-        rel="noreferrer noopener"
-      >
+      <a className="scan-result-item" href={barcode.rawValue}>
         {barcode.rawValue}
       </a>
     </li>
