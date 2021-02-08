@@ -34,30 +34,34 @@ export function QRCodeReader(props: Props) {
   const { hasCompatibility, detect } = useBarcodeDetector()
   const { getBackCameraStream } = useUserMedia(props)
 
-  useEffect(() => {
-    if (!hasCompatibility || !videoRef.current) {
-      return
-    }
-    getBackCameraStream().then((mediaStream) => {
-      const track = mediaStream.getVideoTracks()[0]
-      // @ts-expect-error ImageCapture is not defined yet
-      const captureTrack = new ImageCapture(track)
-      videoRef.current!.srcObject = mediaStream
-
-      function detectloop() {
-        captureTrack
-          .grabFrame()
-          .then(async (imgBitMap: ImageBitmap) => {
-            const results = await detect(imgBitMap)
-            onResult(results)
-          })
-          .finally(() => {
-            requestAnimationFrame(detectloop)
-          })
+  useEffect(
+    () => {
+      if (!hasCompatibility || !videoRef.current) {
+        return
       }
-      detectloop()
-    })
-  }, [hasCompatibility, videoRef])
+      getBackCameraStream().then((mediaStream) => {
+        const track = mediaStream.getVideoTracks()[0]
+        // @ts-expect-error ImageCapture is not defined yet
+        const captureTrack = new ImageCapture(track)
+        videoRef.current!.srcObject = mediaStream
+
+        function detectloop() {
+          captureTrack
+            .grabFrame()
+            .then(async (imgBitMap: ImageBitmap) => {
+              const results = await detect(imgBitMap)
+              onResult(results)
+            })
+            .finally(() => {
+              requestAnimationFrame(detectloop)
+            })
+        }
+        detectloop()
+      })
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [hasCompatibility, videoRef]
+  )
 
   if (!hasCompatibility) {
     return (

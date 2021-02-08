@@ -41,7 +41,7 @@ export function DetectionOverlay(props: Props) {
       ctx.closePath()
       ctx.stroke()
     }
-  }, [barcodes, canvasRef, ctx])
+  }, [barcodes, canvasRef, ctx, props.height, props.width])
 
   return <canvas ref={canvasRef} />
 }
