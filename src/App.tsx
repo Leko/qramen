@@ -90,8 +90,11 @@ function App() {
                   }
                   onClick={(e) => {
                     e.preventDefault()
-                    // eslint-disable-next-line no-restricted-globals
-                    navigator.share({ url: location.href })
+                    navigator.share({
+                      // eslint-disable-next-line no-restricted-globals
+                      url: location.href,
+                      title: document.title,
+                    })
                   }}
                 >
                   Share QRamen
