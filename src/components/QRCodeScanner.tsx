@@ -39,23 +39,17 @@ export function QRCodeScanner(props: Props) {
         return
       }
       getBackCameraStream().then((mediaStream) => {
-        const track = mediaStream.getVideoTracks()[0]
-        // @ts-expect-error ImageCapture is not defined yet
-        const captureTrack = new ImageCapture(track)
-        videoRef.current!.srcObject = mediaStream
-
         function detectloop() {
-          captureTrack
-            .grabFrame()
-            .then(async (imgBitMap: ImageBitmap) => {
-              const results = await detect(imgBitMap)
-              onResult(results)
-            })
+          detect(videoRef.current)
+            .then(onResult)
             .finally(() => {
               requestAnimationFrame(detectloop)
             })
         }
-        detectloop()
+
+        videoRef.current!.srcObject = mediaStream
+        // Wait until the video is ready
+        videoRef.current?.addEventListener('playing', detectloop)
       })
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
