@@ -9,11 +9,12 @@ interface Props {
 export function ScanResultItem(props: Props) {
   const { barcode } = props
   return (
-    <li
-      className="scan-result-item-wrap"
-      style={{ borderLeftColor: barcode.hashColor }}
-    >
-      <a className="scan-result-item" href={barcode.rawValue}>
+    <li className="scan-result-item-wrap">
+      <a
+        href={barcode.rawValue}
+        className="scan-result-item"
+        style={{ borderLeftColor: barcode.hashColor, color: barcode.hashColor }}
+      >
         {barcode.rawValue}
       </a>
     </li>
