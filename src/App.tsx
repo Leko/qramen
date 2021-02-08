@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Onboarding } from './components/Onboarding'
-import { QRCodeReader } from './components/QRCodeReader'
+import { QRCodeScanner } from './components/QRCodeScanner'
 import { DetectionOverlay } from './components/DetectionOverlay'
 import { ExactMatchToast } from './components/ExactMatchToast'
 import { ScanResultItem } from './components/ScanResultItem'
@@ -51,7 +51,7 @@ function App() {
       <main>
         <div className="video-area">
           <div className="user-media-preview">
-            <QRCodeReader onResult={updateResult} {...{ width, height }} />
+            <QRCodeScanner onResult={updateResult} {...{ width, height }} />
           </div>
           <div className="detection-result">
             <DetectionOverlay barcodes={latest} {...{ width, height }} />

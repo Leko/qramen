@@ -10,7 +10,6 @@ function useUserMedia({ width, height }: { width: number; height: number }) {
       video: {
         width,
         height,
-        aspectRatio: width / height,
         facingMode: 'environment',
       },
       audio: false,
@@ -28,7 +27,7 @@ interface Props {
   onResult: (results: DetectedBarcode[]) => unknown
 }
 
-export function QRCodeReader(props: Props) {
+export function QRCodeScanner(props: Props) {
   const { onResult } = props
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const { hasCompatibility, detect } = useBarcodeDetector()
@@ -74,7 +73,12 @@ export function QRCodeReader(props: Props) {
 
   return (
     <div>
-      <video ref={videoRef} playsInline autoPlay />
+      <video
+        ref={videoRef}
+        style={{ width: props.width, height: props.height }}
+        playsInline
+        autoPlay
+      />
     </div>
   )
 }
