@@ -2,6 +2,8 @@
   position: relative;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .brand {
@@ -10,8 +12,24 @@
   top: 0;
   left: 0;
   height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.brand-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+.brand-title {
+  font-size: 16px;
+  color: white;
 }
 
+.main {
+  flex: 1;
+}
 .video-area {
   position: relative;
 }
@@ -39,11 +57,33 @@
   margin: 16px 0;
 }
 
+.instruction {
+  padding: 40px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.instruction-title {
+  font-size: 18px;
+}
+.instruction-description {
+  margin-top: 8px;
+}
+.instruction-share {
+  margin-top: 32px;
+}
+
 .footer {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 8px 16px;
 }
 .footer-item {
-  margin-left: 8px;
+  font-size: 14px;
+}
+.footer-item:not(:first-child)::before {
+  content: '|';
+  display: inline-block;
+  margin: 0 4px;
 }

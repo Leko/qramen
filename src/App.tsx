@@ -5,6 +5,7 @@ import { DetectionOverlay } from './components/DetectionOverlay'
 import { ExactMatchToast } from './components/ExactMatchToast'
 import { ScanResultItem } from './components/ScanResultItem'
 import { DetectedBarcode } from './hooks/useBarcodeDetector'
+import logo from './logo.svg'
 
 import './App.css'
 
@@ -25,7 +26,7 @@ function useAgreement() {
 }
 
 const width = window.innerWidth
-const height = window.innerHeight / 2
+const height = (window.innerHeight / 3) * 2
 
 function App() {
   const { isAgreed, agree } = useAgreement()
@@ -46,9 +47,10 @@ function App() {
   return (
     <div className="App">
       <header className="brand">
-        <h1>QRamen</h1>
+        <img src={logo} className="brand-logo" />
+        <h1 className="brand-title">QRamen</h1>
       </header>
-      <main>
+      <main className="main">
         <div className="video-area">
           <div className="user-media-preview">
             <QRCodeScanner onResult={updateResult} {...{ width, height }} />
@@ -72,12 +74,39 @@ function App() {
               ))}
             </ul>
           </div>
-        ) : null}
+        ) : (
+          <div className="instruction">
+            <h2 className="instruction-title">Scan QR code</h2>
+            <p className="instruction-description">
+              Something went wrong?{' '}
+              <a href="https://github.com/Leko/qramen">Report a bug</a>
+            </p>
+            {'share' in navigator ? (
+              <p className="instruction-share">
+                <a
+                  href={
+                    // eslint-disable-next-line no-restricted-globals
+                    location.href
+                  }
+                  onClick={(e) => {
+                    e.preventDefault()
+                    // eslint-disable-next-line no-restricted-globals
+                    navigator.share({ url: location.href })
+                  }}
+                >
+                  Share QRamen
+                </a>
+              </p>
+            ) : null}
+          </div>
+        )}
       </main>
       <footer className="footer">
-        <small className="footer-item">&copy; 2021- Leko</small>
-        <a className="footer-item" href="https://github.com/Leko/reqr">
-          GitHub repo
+        <small className="footer-item">
+          &copy; 2021- <a href="https://leko.jp">Leko</a>
+        </small>
+        <a className="footer-item" href="https://github.com/Leko/qramen">
+          GitHub
         </a>
       </footer>
     </div>
