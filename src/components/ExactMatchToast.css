@@ -1,0 +1,15 @@
+.exact-match-toast {
+  transition: 200ms ease-in-out;
+  opacity: 0;
+
+  display: block;
+  padding: 16px 24px;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.exact-match-toast.visible {
+  opacity: 1;
+}

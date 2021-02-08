@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react'
-import colorHash from 'material-color-hash'
 import { DetectedBarcode } from '../hooks/useBarcodeDetector'
 
 interface Props {
@@ -33,7 +32,7 @@ export function DetectionOverlay(props: Props) {
     for (const barcode of barcodes) {
       const start = barcode.cornerPoints[0]
       ctx.beginPath()
-      ctx.strokeStyle = colorHash(barcode.rawValue, 300).backgroundColor
+      ctx.strokeStyle = barcode.hashColor
       ctx.lineWidth = 5
       ctx.moveTo(start.x, start.y)
       for (const p of barcode.cornerPoints.slice(1)) {

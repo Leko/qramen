@@ -1,8 +1,11 @@
+import colorHash from 'material-color-hash'
+
 export interface DetectedBarcode {
   boundingBox: DOMRectReadOnly
   cornerPoints: { x: number; y: number }[]
   format: string
   rawValue: string
+  hashColor: string // CSS color
 }
 
 export function useBarcodeDetector() {
@@ -16,7 +19,16 @@ export function useBarcodeDetector() {
 
     // @ts-expect-error BarcodeDetector is not defined yet
     const detector = new window.BarcodeDetector({ formats: ['qr_code'] })
-    return detector?.detect(source)
+    return detector
+      ?.detect(source)
+      .then((results: Omit<DetectedBarcode, 'hashColor'>[]) =>
+        results.map(
+          (r: Omit<DetectedBarcode, 'hashColor'>): DetectedBarcode => ({
+            ...r,
+            hashColor: colorHash(r.rawValue, 300).backgroundColor,
+          })
+        )
+      )
   }
 
   return {

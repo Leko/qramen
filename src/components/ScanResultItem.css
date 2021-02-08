@@ -1,0 +1,9 @@
+.scan-result-item-wrap {
+  list-style-type: none;
+  border-top: 1px solid lightgray;
+}
+.scan-result-item {
+  border-left: 8px solid;
+  display: block;
+  padding: 16px;
+}
