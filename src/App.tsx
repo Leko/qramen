@@ -33,6 +33,7 @@ function App() {
   const [lastScanned, setLastScanned] = useState<DetectedBarcode[]>([])
 
   function updateResult(results: DetectedBarcode[]) {
+    console.log(results)
     setLatest(results)
     if (results.length) {
       setLastScanned(results)
