@@ -30,17 +30,14 @@
   padding-left: 24px;
 }
 
-.onboarding-complete-button {
-  appearance: none;
-  border: 0;
-
+.onboarding-errors {
   margin-top: 24px;
-  padding: 16px 24px;
-  width: 100%;
-  display: block;
-  cursor: pointer;
-  background-color: #242424;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
+  padding: 16px;
+  background-color: mistyrose;
+  border: 1px solid #d43220;
+  color: #d43220;
+}
+
+.onboarding-submit-wrap {
+  margin-top: 24px;
 }

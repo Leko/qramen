@@ -1,5 +1,5 @@
-import React from 'react'
-import { DetectedBarcode } from '../hooks/useBarcodeDetector'
+import { Button } from './Button'
+import type { DetectedBarcode } from '../hooks/useBarcodeDetector'
 import './ExactMatchToast.css'
 
 interface Props {
@@ -9,13 +9,10 @@ interface Props {
 export function ExactMatchToast(props: Props) {
   const { barcode } = props
   return (
-    <a
-      href={barcode?.rawValue}
-      target="_blank"
-      rel="noreferrer noopener"
-      className={'exact-match-toast ' + (barcode ? 'visible' : '')}
-    >
-      Quick open: {barcode?.rawValue}
-    </a>
+    <div className={'exact-match-toast ' + (barcode ? 'visible' : '')}>
+      <Button href={barcode?.rawValue} openAsNewTab>
+        Open: {barcode?.rawValue}
+      </Button>
+    </div>
   )
 }

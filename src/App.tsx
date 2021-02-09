@@ -3,9 +3,10 @@ import { QRCodeScanner } from './components/QRCodeScanner'
 import { DetectionOverlay } from './components/DetectionOverlay'
 import { ExactMatchToast } from './components/ExactMatchToast'
 import { ScanResultItem } from './components/ScanResultItem'
-import { DetectedBarcode } from './hooks/useBarcodeDetector'
-import logo from './logo.svg'
-import pkg from '../package.json'
+import { Instruction } from './components/Instruction'
+import { Brand } from './components/Brand'
+import { Footer } from './components/Footer'
+import type { DetectedBarcode } from './hooks/useBarcodeDetector'
 
 import './App.css'
 
@@ -15,6 +16,7 @@ const height = (window.innerHeight / 3) * 2
 function App() {
   const [latest, setLatest] = useState<DetectedBarcode[]>([])
   const [lastScanned, setLastScanned] = useState<DetectedBarcode[]>([])
+  const dimension = { width, height }
 
   function updateResult(results: DetectedBarcode[]) {
     setLatest(results)
@@ -25,17 +27,14 @@ function App() {
 
   return (
     <div className="App">
-      <header className="brand">
-        <img src={logo} alt="QRamen" className="brand-logo" />
-        <h1 className="brand-title">QRamen</h1>
-      </header>
+      <Brand />
       <main className="main">
         <div className="video-area">
           <div className="user-media-preview">
-            <QRCodeScanner onResult={updateResult} {...{ width, height }} />
+            <QRCodeScanner onResult={updateResult} {...dimension} />
           </div>
           <div className="detection-result">
-            <DetectionOverlay barcodes={latest} {...{ width, height }} />
+            <DetectionOverlay barcodes={latest} {...dimension} />
           </div>
           <div className="exact-match">
             <ExactMatchToast barcode={lastScanned[0]} />
@@ -43,7 +42,7 @@ function App() {
         </div>
         {lastScanned.length > 0 ? (
           <div className="scan-results">
-            <h2>All scan results</h2>
+            <h2 className="scan-results-heading">Scan results</h2>
             <ul>
               {lastScanned.map((barcode) => (
                 <ScanResultItem
@@ -54,49 +53,10 @@ function App() {
             </ul>
           </div>
         ) : (
-          <>
-            <div className="instruction">
-              <h2 className="instruction-title">Scan QR code</h2>
-              <p className="instruction-description">
-                When the scanning was success, show results here.
-              </p>
-            </div>
-            <div className="help">
-              <p className="help-description">
-                Something went wrong? <a href={pkg.bugs}>Report a bug</a>
-              </p>
-              {'share' in navigator ? (
-                <p className="help-share">
-                  <a
-                    href={
-                      // eslint-disable-next-line no-restricted-globals
-                      location.href
-                    }
-                    onClick={(e) => {
-                      e.preventDefault()
-                      navigator.share({
-                        // eslint-disable-next-line no-restricted-globals
-                        url: location.href,
-                        title: document.title,
-                      })
-                    }}
-                  >
-                    Share QRamen
-                  </a>
-                </p>
-              ) : null}
-            </div>
-          </>
+          <Instruction />
         )}
       </main>
-      <footer className="footer">
-        <small className="footer-item">
-          &copy; 2021- <a href="https://leko.jp">Leko</a>
-        </small>
-        <a className="footer-item" href={pkg.repository}>
-          GitHub
-        </a>
-      </footer>
+      <Footer />
     </div>
   )
 }

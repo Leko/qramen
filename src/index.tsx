@@ -1,33 +1,22 @@
-import React, { Suspense, StrictMode, useState } from 'react'
+import React, { Suspense, StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import { Metric } from 'web-vitals'
 import { Onboarding } from './components/Onboarding'
+import { useAgreement } from './hooks/agreement'
+import { useBarcodeDetector } from './hooks/useBarcodeDetector'
 import reportWebVitals from './reportWebVitals'
-import './index.css'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
 const App = React.lazy(() => import('./App'))
 
-function useAgreement() {
-  const KEY = 'reqr-agreed-at'
-  const VALUE = '1'
-  const [isAgreed, _setAgreedAt] = useState(localStorage.getItem(KEY) || false)
-
-  function agree() {
-    _setAgreedAt(VALUE)
-    localStorage.setItem(KEY, VALUE)
-  }
-
-  return {
-    isAgreed: isAgreed === VALUE,
-    agree,
-  }
-}
-
 function Root() {
   const { isAgreed, agree } = useAgreement()
+  const { hasCompatibility } = useBarcodeDetector()
 
   if (!isAgreed) {
-    return <Onboarding onCompleted={agree} />
+    return (
+      <Onboarding hasCompatibility={hasCompatibility} onCompleted={agree} />
+    )
   }
 
   return (
@@ -37,15 +26,8 @@ function Root() {
   )
 }
 
-ReactDOM.render(
-  <StrictMode>
-    <Root />
-  </StrictMode>,
-  document.getElementById('root')
-)
-
 function sendToAnalytics({ id, name, value }: Metric) {
-  // @ts-expect-error ga is defined globally
+  // @ts-expect-error gtag is defined globally
   gtag('send', 'event', {
     eventCategory: 'Web Vitals',
     eventAction: name,
@@ -54,4 +36,13 @@ function sendToAnalytics({ id, name, value }: Metric) {
     nonInteraction: true, // avoids affecting bounce rate
   })
 }
+
+ReactDOM.render(
+  <StrictMode>
+    <Root />
+  </StrictMode>,
+  document.getElementById('root')
+)
+
+serviceWorkerRegistration.register()
 reportWebVitals(sendToAnalytics)
