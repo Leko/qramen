@@ -1,6 +1,8 @@
 .exact-match-toast {
   transition: 200ms ease-in-out;
   opacity: 0;
+  padding: 0 8px;
+  overflow: hidden;
 }
 
 .exact-match-toast.visible {

@@ -8,6 +8,7 @@ interface Props {
 
 export function ExactMatchToast(props: Props) {
   const { barcode } = props
+
   return (
     <div className={'exact-match-toast ' + (barcode ? 'visible' : '')}>
       <Button href={barcode?.rawValue} openAsNewTab>

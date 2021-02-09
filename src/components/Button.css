@@ -4,11 +4,16 @@
   text-align: center;
   text-decoration: none;
 
+  box-sizing: border-box;
   padding: 16px 24px;
   width: 100%;
+  max-width: 100%;
   display: block;
   font-weight: bold;
   font-size: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .button:not([disabled]) {
   background-color: #242424;
