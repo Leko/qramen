@@ -1,5 +1,4 @@
-import React from 'react'
-import { DetectedBarcode } from '../hooks/useBarcodeDetector'
+import type { DetectedBarcode } from '../hooks/useBarcodeDetector'
 import './ScanResultItem.css'
 
 interface Props {

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { DetectedBarcode } from '../hooks/useBarcodeDetector'
+import { useEffect, useRef, useState } from 'react'
+import type { DetectedBarcode } from '../hooks/useBarcodeDetector'
 
 interface Props {
   width: number

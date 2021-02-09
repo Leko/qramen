@@ -3,7 +3,7 @@ import { QRCodeScanner } from './components/QRCodeScanner'
 import { DetectionOverlay } from './components/DetectionOverlay'
 import { ExactMatchToast } from './components/ExactMatchToast'
 import { ScanResultItem } from './components/ScanResultItem'
-import { DetectedBarcode } from './hooks/useBarcodeDetector'
+import type { DetectedBarcode } from './hooks/useBarcodeDetector'
 import logo from './logo.svg'
 import pkg from '../package.json'
 
