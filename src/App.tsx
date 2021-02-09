@@ -76,32 +76,39 @@ function App() {
             </ul>
           </div>
         ) : (
-          <div className="instruction">
-            <h2 className="instruction-title">Scan QR code</h2>
-            <p className="instruction-description">
-              Something went wrong? <a href={pkg.bugs}>Report a bug</a>
-            </p>
-            {'share' in navigator ? (
-              <p className="instruction-share">
-                <a
-                  href={
-                    // eslint-disable-next-line no-restricted-globals
-                    location.href
-                  }
-                  onClick={(e) => {
-                    e.preventDefault()
-                    navigator.share({
-                      // eslint-disable-next-line no-restricted-globals
-                      url: location.href,
-                      title: document.title,
-                    })
-                  }}
-                >
-                  Share QRamen
-                </a>
+          <>
+            <div className="instruction">
+              <h2 className="instruction-title">Scan QR code</h2>
+              <p className="instruction-description">
+                When the scanning was success, show results here.
               </p>
-            ) : null}
-          </div>
+            </div>
+            <div className="help">
+              <p className="help-description">
+                Something went wrong? <a href={pkg.bugs}>Report a bug</a>
+              </p>
+              {'share' in navigator ? (
+                <p className="help-share">
+                  <a
+                    href={
+                      // eslint-disable-next-line no-restricted-globals
+                      location.href
+                    }
+                    onClick={(e) => {
+                      e.preventDefault()
+                      navigator.share({
+                        // eslint-disable-next-line no-restricted-globals
+                        url: location.href,
+                        title: document.title,
+                      })
+                    }}
+                  >
+                    Share QRamen
+                  </a>
+                </p>
+              ) : null}
+            </div>
+          </>
         )}
       </main>
       <footer className="footer">

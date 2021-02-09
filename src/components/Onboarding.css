@@ -21,6 +21,7 @@
   margin-right: 8px;
 }
 .onboarding-brand-title {
+  color: #242424;
   font-size: 48px;
 }
 
@@ -38,7 +39,7 @@
   width: 100%;
   display: block;
   cursor: pointer;
-  background-color: black;
+  background-color: #242424;
   color: white;
   font-weight: bold;
   font-size: 18px;

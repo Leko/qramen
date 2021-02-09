@@ -14,7 +14,7 @@ ReactDOM.render(
 
 function sendToAnalytics({ id, name, value }: Metric) {
   // @ts-expect-error ga is defined globally
-  ga('send', 'event', {
+  gtag('send', 'event', {
     eventCategory: 'Web Vitals',
     eventAction: name,
     eventValue: Math.round(name === 'CLS' ? value * 1000 : value), // values must be integers
