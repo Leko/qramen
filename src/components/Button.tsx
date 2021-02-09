@@ -1,7 +1,7 @@
 import './Button.css'
 
 interface Props {
-  disabled: boolean
+  disabled?: boolean
   href?: string
   openAsNewTab?: boolean
   children: React.ReactNode
