@@ -42,7 +42,7 @@ function App() {
         </div>
         {lastScanned.length > 0 ? (
           <div className="scan-results">
-            <h2>Scan results</h2>
+            <h2 className="scan-results-heading">Scan results</h2>
             <ul>
               {lastScanned.map((barcode) => (
                 <ScanResultItem

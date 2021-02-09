@@ -32,5 +32,9 @@
   justify-content: center;
 }
 .scan-results {
-  margin: 16px 0;
+  margin-top: 24px;
+}
+.scan-results-heading {
+  margin: 0 16px;
+  margin-bottom: 8px;
 }
