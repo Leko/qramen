@@ -2,7 +2,7 @@
   "name": "qramen",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://qramen.vercel.app",
+  "homepage": "https://qramen.app",
   "repository": "https://github.com/Leko/qramen",
   "bugs": "https://github.com/Leko/qramen/issues",
   "dependencies": {

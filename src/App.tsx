@@ -3,10 +3,10 @@ import { QRCodeScanner } from './components/QRCodeScanner'
 import { DetectionOverlay } from './components/DetectionOverlay'
 import { ExactMatchToast } from './components/ExactMatchToast'
 import { ScanResultItem } from './components/ScanResultItem'
+import { Instruction } from './components/Instruction'
 import { Brand } from './components/Brand'
 import { Footer } from './components/Footer'
 import type { DetectedBarcode } from './hooks/useBarcodeDetector'
-import pkg from '../package.json'
 
 import './App.css'
 
@@ -52,39 +52,7 @@ function App() {
             </ul>
           </div>
         ) : (
-          <>
-            <div className="instruction">
-              <h2 className="instruction-title">Scan QR code</h2>
-              <p className="instruction-description">
-                When the scanning was success, show results here.
-              </p>
-            </div>
-            <div className="help">
-              <p className="help-description">
-                Something went wrong? <a href={pkg.bugs}>Report a bug</a>
-              </p>
-              {'share' in navigator ? (
-                <p className="help-share">
-                  <a
-                    href={
-                      // eslint-disable-next-line no-restricted-globals
-                      location.href
-                    }
-                    onClick={(e) => {
-                      e.preventDefault()
-                      navigator.share({
-                        // eslint-disable-next-line no-restricted-globals
-                        url: location.href,
-                        title: document.title,
-                      })
-                    }}
-                  >
-                    Share QRamen
-                  </a>
-                </p>
-              ) : null}
-            </div>
-          </>
+          <Instruction />
         )}
       </main>
       <Footer />
