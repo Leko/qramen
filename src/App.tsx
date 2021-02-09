@@ -6,6 +6,7 @@ import { ExactMatchToast } from './components/ExactMatchToast'
 import { ScanResultItem } from './components/ScanResultItem'
 import { DetectedBarcode } from './hooks/useBarcodeDetector'
 import logo from './logo.svg'
+import pkg from '../package.json'
 
 import './App.css'
 
@@ -78,8 +79,7 @@ function App() {
           <div className="instruction">
             <h2 className="instruction-title">Scan QR code</h2>
             <p className="instruction-description">
-              Something went wrong?{' '}
-              <a href="https://github.com/Leko/qramen">Report a bug</a>
+              Something went wrong? <a href={pkg.bugs}>Report a bug</a>
             </p>
             {'share' in navigator ? (
               <p className="instruction-share">
@@ -108,7 +108,7 @@ function App() {
         <small className="footer-item">
           &copy; 2021- <a href="https://leko.jp">Leko</a>
         </small>
-        <a className="footer-item" href="https://github.com/Leko/qramen">
+        <a className="footer-item" href={pkg.repository}>
           GitHub
         </a>
       </footer>
