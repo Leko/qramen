@@ -4,6 +4,7 @@ import { Metric } from 'web-vitals'
 import { Onboarding } from './components/Onboarding'
 import { useAgreement } from './hooks/agreement'
 import reportWebVitals from './reportWebVitals'
+import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import './index.css'
 
 const App = React.lazy(() => import('./App'))
@@ -22,13 +23,6 @@ function Root() {
   )
 }
 
-ReactDOM.render(
-  <StrictMode>
-    <Root />
-  </StrictMode>,
-  document.getElementById('root')
-)
-
 function sendToAnalytics({ id, name, value }: Metric) {
   // @ts-expect-error gtag is defined globally
   gtag('send', 'event', {
@@ -39,4 +33,13 @@ function sendToAnalytics({ id, name, value }: Metric) {
     nonInteraction: true, // avoids affecting bounce rate
   })
 }
+
+ReactDOM.render(
+  <StrictMode>
+    <Root />
+  </StrictMode>,
+  document.getElementById('root')
+)
+
+serviceWorkerRegistration.register()
 reportWebVitals(sendToAnalytics)
