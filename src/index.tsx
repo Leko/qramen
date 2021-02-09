@@ -1,13 +1,45 @@
-import React, { StrictMode } from 'react'
+import React, { Suspense, StrictMode, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Metric } from 'web-vitals'
-import App from './App'
+import { Onboarding } from './components/Onboarding'
 import reportWebVitals from './reportWebVitals'
 import './index.css'
 
+const App = React.lazy(() => import('./App'))
+
+function useAgreement() {
+  const KEY = 'reqr-agreed-at'
+  const VALUE = '1'
+  const [isAgreed, _setAgreedAt] = useState(localStorage.getItem(KEY) || false)
+
+  function agree() {
+    _setAgreedAt(VALUE)
+    localStorage.setItem(KEY, VALUE)
+  }
+
+  return {
+    isAgreed: isAgreed === VALUE,
+    agree,
+  }
+}
+
+function Root() {
+  const { isAgreed, agree } = useAgreement()
+
+  if (!isAgreed) {
+    return <Onboarding onCompleted={agree} />
+  }
+
+  return (
+    <Suspense fallback={null}>
+      <App />
+    </Suspense>
+  )
+}
+
 ReactDOM.render(
   <StrictMode>
-    <App />
+    <Root />
   </StrictMode>,
   document.getElementById('root')
 )
