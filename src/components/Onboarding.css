@@ -1,5 +1,7 @@
 .onboarding {
   padding: 16px;
+  margin: 0 auto;
+  max-width: 420px;
 }
 
 .onboarding-heading {
