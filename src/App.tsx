@@ -16,6 +16,7 @@ const height = (window.innerHeight / 3) * 2
 function App() {
   const [latest, setLatest] = useState<DetectedBarcode[]>([])
   const [lastScanned, setLastScanned] = useState<DetectedBarcode[]>([])
+  const dimension = { width, height }
 
   function updateResult(results: DetectedBarcode[]) {
     setLatest(results)
@@ -30,10 +31,10 @@ function App() {
       <main className="main">
         <div className="video-area">
           <div className="user-media-preview">
-            <QRCodeScanner onResult={updateResult} {...{ width, height }} />
+            <QRCodeScanner onResult={updateResult} {...dimension} />
           </div>
           <div className="detection-result">
-            <DetectionOverlay barcodes={latest} {...{ width, height }} />
+            <DetectionOverlay barcodes={latest} {...dimension} />
           </div>
           <div className="exact-match">
             <ExactMatchToast barcode={lastScanned[0]} />
@@ -41,7 +42,7 @@ function App() {
         </div>
         {lastScanned.length > 0 ? (
           <div className="scan-results">
-            <h2>All scan results</h2>
+            <h2>Scan results</h2>
             <ul>
               {lastScanned.map((barcode) => (
                 <ScanResultItem

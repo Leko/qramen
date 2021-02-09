@@ -1,3 +1,4 @@
+import { Button } from './Button'
 import logo from '../logo.svg'
 import pkg from '../../package.json'
 import './Onboarding.css'
@@ -27,9 +28,7 @@ export function Onboarding(props: Props) {
         <li>Works offline if you add it to your home screen</li>
       </ul>
 
-      <button className="onboarding-complete-button" onClick={onCompleted}>
-        Start scanning
-      </button>
+      <Button onClick={onCompleted}>Start scanning</Button>
     </div>
   )
 }
