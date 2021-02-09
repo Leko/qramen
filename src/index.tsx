@@ -5,7 +5,6 @@ import { Onboarding } from './components/Onboarding'
 import { useAgreement } from './hooks/agreement'
 import reportWebVitals from './reportWebVitals'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
-import './index.css'
 
 const App = React.lazy(() => import('./App'))
 
