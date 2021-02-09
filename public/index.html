@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-N9094HXPS6"
+    ></script>
+    <script>
+      // https://developers.google.com/analytics/devguides/collection/gtagjs/user-opt-out
+      window['ga-disable-G-N9094HXPS6'] =
+        // See `useAgreement` in the src/App.tsx
+        localStorage.getItem('reqr-agreed-at') !== '1'
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+      gtag('config', 'G-N9094HXPS6')
+    </script>
+
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
