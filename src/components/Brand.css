@@ -1,0 +1,20 @@
+.brand {
+  position: absolute;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.brand-logo {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+.brand-title {
+  font-size: 16px;
+  color: white;
+}

@@ -3,8 +3,9 @@ import { QRCodeScanner } from './components/QRCodeScanner'
 import { DetectionOverlay } from './components/DetectionOverlay'
 import { ExactMatchToast } from './components/ExactMatchToast'
 import { ScanResultItem } from './components/ScanResultItem'
+import { Brand } from './components/Brand'
+import { Footer } from './components/Footer'
 import type { DetectedBarcode } from './hooks/useBarcodeDetector'
-import logo from './logo.svg'
 import pkg from '../package.json'
 
 import './App.css'
@@ -25,10 +26,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="brand">
-        <img src={logo} alt="QRamen" className="brand-logo" />
-        <h1 className="brand-title">QRamen</h1>
-      </header>
+      <Brand />
       <main className="main">
         <div className="video-area">
           <div className="user-media-preview">
@@ -89,14 +87,7 @@ function App() {
           </>
         )}
       </main>
-      <footer className="footer">
-        <small className="footer-item">
-          &copy; 2021- <a href="https://leko.jp">Leko</a>
-        </small>
-        <a className="footer-item" href={pkg.repository}>
-          GitHub
-        </a>
-      </footer>
+      <Footer />
     </div>
   )
 }

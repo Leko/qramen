@@ -6,27 +6,6 @@
   flex-direction: column;
 }
 
-.brand {
-  position: absolute;
-  z-index: 100;
-  top: 0;
-  left: 0;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  background-color: rgba(0, 0, 0, 0.1);
-}
-.brand-logo {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-}
-.brand-title {
-  font-size: 16px;
-  color: white;
-}
-
 .main {
   flex: 1;
   display: flex;
@@ -79,19 +58,4 @@
   display: flex;
   justify-content: center;
   padding: 0 16px 16px;
-}
-
-.footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 16px;
-}
-.footer-item {
-  font-size: 14px;
-}
-.footer-item:not(:first-child)::before {
-  content: '|';
-  display: inline-block;
-  margin: 0 4px;
 }

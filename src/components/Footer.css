@@ -1,0 +1,14 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+}
+.footer-item {
+  font-size: 14px;
+}
+.footer-item:not(:first-child)::before {
+  content: '|';
+  display: inline-block;
+  margin: 0 4px;
+}
