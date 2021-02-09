@@ -3,23 +3,7 @@ import {
   DetectedBarcode,
   useBarcodeDetector,
 } from '../hooks/useBarcodeDetector'
-
-function useUserMedia({ width, height }: { width: number; height: number }) {
-  function getBackCameraStream() {
-    return navigator.mediaDevices.getUserMedia({
-      video: {
-        width,
-        height,
-        facingMode: 'environment',
-      },
-      audio: false,
-    })
-  }
-
-  return {
-    getBackCameraStream,
-  }
-}
+import { useUserMedia } from '../hooks/userMedia'
 
 interface Props {
   width: number
@@ -31,54 +15,50 @@ export function QRCodeScanner(props: Props) {
   const { onResult } = props
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const { hasCompatibility, detect } = useBarcodeDetector()
-  const { getBackCameraStream } = useUserMedia(props)
+  const { mediaStream } = useUserMedia(props)
 
   useEffect(
     () => {
-      if (!hasCompatibility || !videoRef.current) {
+      let frameHandle: number
+      const videoEl = videoRef.current
+      if (!mediaStream || !hasCompatibility || !videoEl) {
         return
       }
-      let track: MediaStreamTrack | null = null
-      getBackCameraStream().then((mediaStream) => {
-        function detectloop() {
-          detect(videoRef.current)
-            .then(onResult)
-            .finally(() => {
-              requestAnimationFrame(detectloop)
-            })
+      function detectloop() {
+        if (videoEl?.readyState !== 4) {
+          frameHandle = requestAnimationFrame(detectloop)
+          return
         }
+        detect(videoEl)
+          .then(onResult)
+          .finally(() => {
+            frameHandle = requestAnimationFrame(detectloop)
+          })
+      }
 
-        track = mediaStream.getVideoTracks()[0]
-        videoRef.current!.srcObject = mediaStream
-        // Wait until the video is ready
-        videoRef.current?.addEventListener('playing', detectloop)
-      })
+      // Wait until the video is ready
+      videoEl.addEventListener('playing', detectloop)
+      videoEl.srcObject = mediaStream
 
       return () => {
-        track?.stop()
+        cancelAnimationFrame(frameHandle)
+        videoEl.removeEventListener('playing', detectloop)
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hasCompatibility, videoRef]
+    [hasCompatibility, videoRef, mediaStream]
   )
 
   if (!hasCompatibility) {
-    return (
-      <div>
-        <h3>Your browser doesn't support BarcodeDetector</h3>
-        <p>TODO: More description</p>
-      </div>
-    )
+    return <div>Your browser doesn't support BarcodeDetector</div>
   }
 
   return (
-    <div>
-      <video
-        ref={videoRef}
-        style={{ width: props.width, height: props.height }}
-        playsInline
-        autoPlay
-      />
-    </div>
+    <video
+      ref={videoRef}
+      style={{ width: props.width, height: props.height }}
+      playsInline
+      autoPlay
+    />
   )
 }
