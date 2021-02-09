@@ -29,6 +29,8 @@
 
 .main {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .video-area {
   position: relative;
@@ -58,7 +60,8 @@
 }
 
 .instruction {
-  padding: 40px 16px;
+  flex: 1;
+  padding: 24px 16px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -67,10 +70,15 @@
   font-size: 18px;
 }
 .instruction-description {
-  margin-top: 8px;
 }
-.instruction-share {
+.help-share {
   margin-top: 32px;
+}
+
+.help {
+  display: flex;
+  justify-content: center;
+  padding: 0 16px 16px;
 }
 
 .footer {

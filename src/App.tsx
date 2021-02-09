@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { Onboarding } from './components/Onboarding'
 import { QRCodeScanner } from './components/QRCodeScanner'
 import { DetectionOverlay } from './components/DetectionOverlay'
 import { ExactMatchToast } from './components/ExactMatchToast'
@@ -10,27 +9,10 @@ import pkg from '../package.json'
 
 import './App.css'
 
-function useAgreement() {
-  const KEY = 'reqr-agreed-at'
-  const VALUE = '1'
-  const [isAgreed, _setAgreedAt] = useState(localStorage.getItem(KEY) || false)
-
-  function agree() {
-    _setAgreedAt(VALUE)
-    localStorage.setItem(KEY, VALUE)
-  }
-
-  return {
-    isAgreed: isAgreed === VALUE,
-    agree,
-  }
-}
-
 const width = window.innerWidth
 const height = (window.innerHeight / 3) * 2
 
 function App() {
-  const { isAgreed, agree } = useAgreement()
   const [latest, setLatest] = useState<DetectedBarcode[]>([])
   const [lastScanned, setLastScanned] = useState<DetectedBarcode[]>([])
 
@@ -39,10 +21,6 @@ function App() {
     if (results.length) {
       setLastScanned(results)
     }
-  }
-
-  if (!isAgreed) {
-    return <Onboarding onCompleted={agree} />
   }
 
   return (
@@ -76,32 +54,39 @@ function App() {
             </ul>
           </div>
         ) : (
-          <div className="instruction">
-            <h2 className="instruction-title">Scan QR code</h2>
-            <p className="instruction-description">
-              Something went wrong? <a href={pkg.bugs}>Report a bug</a>
-            </p>
-            {'share' in navigator ? (
-              <p className="instruction-share">
-                <a
-                  href={
-                    // eslint-disable-next-line no-restricted-globals
-                    location.href
-                  }
-                  onClick={(e) => {
-                    e.preventDefault()
-                    navigator.share({
-                      // eslint-disable-next-line no-restricted-globals
-                      url: location.href,
-                      title: document.title,
-                    })
-                  }}
-                >
-                  Share QRamen
-                </a>
+          <>
+            <div className="instruction">
+              <h2 className="instruction-title">Scan QR code</h2>
+              <p className="instruction-description">
+                When the scanning was success, show results here.
               </p>
-            ) : null}
-          </div>
+            </div>
+            <div className="help">
+              <p className="help-description">
+                Something went wrong? <a href={pkg.bugs}>Report a bug</a>
+              </p>
+              {'share' in navigator ? (
+                <p className="help-share">
+                  <a
+                    href={
+                      // eslint-disable-next-line no-restricted-globals
+                      location.href
+                    }
+                    onClick={(e) => {
+                      e.preventDefault()
+                      navigator.share({
+                        // eslint-disable-next-line no-restricted-globals
+                        url: location.href,
+                        title: document.title,
+                      })
+                    }}
+                  >
+                    Share QRamen
+                  </a>
+                </p>
+              ) : null}
+            </div>
+          </>
         )}
       </main>
       <footer className="footer">
