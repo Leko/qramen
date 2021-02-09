@@ -1,6 +1,7 @@
 import './Button.css'
 
 interface Props {
+  disabled: boolean
   href?: string
   openAsNewTab?: boolean
   children: React.ReactNode
@@ -8,7 +9,7 @@ interface Props {
 }
 
 export function Button(props: Props) {
-  const { href, openAsNewTab, children, onClick } = props
+  const { disabled, href, openAsNewTab, children, onClick } = props
 
   if (href) {
     const attrs = openAsNewTab
@@ -18,14 +19,14 @@ export function Button(props: Props) {
         }
       : {}
     return (
-      <a className="button" href={href} {...attrs}>
+      <a className="button" href={disabled ? undefined : href} {...attrs}>
         {children}
       </a>
     )
   }
 
   return (
-    <button className="button" onClick={onClick}>
+    <button className="button" disabled={disabled} onClick={onClick}>
       {children}
     </button>
   )

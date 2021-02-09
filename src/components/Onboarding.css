@@ -29,3 +29,15 @@
   margin-top: 24px;
   padding-left: 24px;
 }
+
+.onboarding-errors {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: mistyrose;
+  border: 1px solid #d43220;
+  color: #d43220;
+}
+
+.onboarding-submit-wrap {
+  margin-top: 24px;
+}

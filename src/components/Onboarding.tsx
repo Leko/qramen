@@ -4,11 +4,12 @@ import pkg from '../../package.json'
 import './Onboarding.css'
 
 interface Props {
+  hasCompatibility: boolean
   onCompleted: () => unknown
 }
 
 export function Onboarding(props: Props) {
-  const { onCompleted } = props
+  const { hasCompatibility, onCompleted } = props
   return (
     <div className="onboarding">
       <header className="onboarding-heading">
@@ -27,8 +28,15 @@ export function Onboarding(props: Props) {
         <li>No need to install</li>
         <li>Works offline if you add it to your home screen</li>
       </ul>
-
-      <Button onClick={onCompleted}>Start scanning</Button>
+      {hasCompatibility ? (
+        <div className="onboarding-submit-wrap">
+          <Button disabled={!hasCompatibility} onClick={onCompleted}>
+            Start scanning
+          </Button>
+        </div>
+      ) : (
+        <p className="onboarding-errors">This browser is unsupported.</p>
+      )}
     </div>
   )
 }
