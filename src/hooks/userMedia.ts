@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react'
 
+export enum ErrorReason {
+  NotAllowedError = 'NotAllowedError',
+  Unknown = 'Unknown',
+}
+
 export function useUserMedia({
   width,
   height,
@@ -10,6 +15,7 @@ export function useUserMedia({
   enabled: boolean
 }) {
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null)
+  const [error, setError] = useState<ErrorReason | null>(null)
 
   useEffect(() => {
     if (!enabled) {
@@ -24,10 +30,21 @@ export function useUserMedia({
         },
         audio: false,
       })
-      .then((mediaStream) => {
-        _mediaStream = mediaStream
-        setMediaStream(mediaStream)
-      })
+      .then(
+        (mediaStream) => {
+          _mediaStream = mediaStream
+          setMediaStream(mediaStream)
+        },
+        (e) => {
+          switch (e.name) {
+            case 'NotAllowedError':
+              setError(ErrorReason.NotAllowedError)
+              return
+            default:
+              setError(ErrorReason.Unknown)
+          }
+        }
+      )
 
     return () => {
       _mediaStream?.getTracks().forEach((track) => {
@@ -37,6 +54,7 @@ export function useUserMedia({
   }, [enabled, width, height])
 
   return {
+    error,
     mediaStream,
   }
 }
