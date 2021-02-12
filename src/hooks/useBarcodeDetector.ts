@@ -1,5 +1,9 @@
-import colorHash from 'material-color-hash'
-import { useBrowserCompatibility } from './browser-compatibility'
+/* eslint-disable import/no-webpack-loader-syntax */
+import * as comlink from 'comlink'
+import { useEffect, useRef, useState } from 'react'
+// @ts-expect-error worker-loader
+import QRCodeWorker from 'worker-loader!../workers/qr-code'
+import type { BarcodeSource } from '../workers/qr-code'
 
 export interface DetectedBarcode {
   boundingBox: DOMRectReadOnly
@@ -9,33 +13,56 @@ export interface DetectedBarcode {
   hashColor: string // CSS color
 }
 
-export function useBarcodeDetector() {
-  const {
-    hasBarcodeDetector,
-    supportedQRCodeFormat,
-  } = useBrowserCompatibility()
+const worker = comlink.wrap<{
+  detectQRCodes(source: BarcodeSource): Promise<DetectedBarcode[]>
+}>(new QRCodeWorker())
 
-  type FIXME_any = any
-  function detect(source: FIXME_any): Promise<DetectedBarcode[]> {
-    if (!hasBarcodeDetector || !supportedQRCodeFormat) {
-      throw new Error("This environment doesn't support BarcodeDetector")
+export function useBarcodeDetector({
+  mediaStream,
+}: {
+  mediaStream: MediaStream | null
+}) {
+  const videoRef = useRef<HTMLVideoElement | null>(null)
+  const [results, setResults] = useState<DetectedBarcode[]>([])
+
+  useEffect(() => {
+    const videoEl = videoRef.current
+    if (!videoEl || !mediaStream) {
+      return
     }
 
-    // @ts-expect-error BarcodeDetector is not defined yet
-    const detector = new window.BarcodeDetector({ formats: ['qr_code'] })
-    return detector
-      ?.detect(source)
-      .then((results: Omit<DetectedBarcode, 'hashColor'>[]) =>
-        results.map(
-          (r: Omit<DetectedBarcode, 'hashColor'>): DetectedBarcode => ({
-            ...r,
-            hashColor: colorHash(r.rawValue, 300).backgroundColor,
-          })
-        )
-      )
-  }
+    let frameHandle: number
+    function detectloop() {
+      if (videoEl?.readyState !== 4) {
+        frameHandle = requestAnimationFrame(detectloop)
+        return
+      }
+
+      createImageBitmap(videoEl)
+        .then((bmp) => worker.detectQRCodes(comlink.transfer(bmp, [bmp])))
+        .then(setResults)
+        .finally(() => {
+          frameHandle = requestAnimationFrame(detectloop)
+        })
+    }
+    function onReady() {
+      detectloop()
+    }
+
+    // Wait until the video is ready
+    videoEl.addEventListener('loadeddata', onReady, {
+      once: true,
+    })
+    videoEl.srcObject = mediaStream
+
+    return () => {
+      cancelAnimationFrame(frameHandle)
+      videoEl.removeEventListener('loadeddata', onReady)
+    }
+  }, [videoRef, mediaStream])
 
   return {
-    detect,
+    videoRef,
+    results,
   }
 }

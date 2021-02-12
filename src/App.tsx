@@ -12,7 +12,9 @@ import './App.css'
 
 function App() {
   const ref = useRef<HTMLDivElement | null>(null)
-  const [dimension, setDimention] = useState({ width: 0, height: 0 })
+  const [dimension, setDimention] = useState<{ width: number; height: number }>(
+    { width: 0, height: 0 }
+  )
   const [latest, setLatest] = useState<DetectedBarcode[]>([])
   const [lastScanned, setLastScanned] = useState<DetectedBarcode[]>([])
 
@@ -27,7 +29,8 @@ function App() {
     if (!ref.current) {
       return
     }
-    setDimention(ref.current!.getBoundingClientRect())
+    const { width, height } = ref.current!.getBoundingClientRect()
+    setDimention({ width, height })
   }, [ref])
 
   return (
