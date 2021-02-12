@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useLayoutEffect, useRef, useState } from 'react'
 import { QRCodeScanner } from './components/QRCodeScanner'
 import { DetectionOverlay } from './components/DetectionOverlay'
 import { ExactMatchToast } from './components/ExactMatchToast'
@@ -10,13 +10,13 @@ import type { DetectedBarcode } from './hooks/useBarcodeDetector'
 
 import './App.css'
 
-const width = window.innerWidth
-const height = (window.innerHeight / 3) * 2
-
 function App() {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const [dimension, setDimention] = useState<{ width: number; height: number }>(
+    { width: 0, height: 0 }
+  )
   const [latest, setLatest] = useState<DetectedBarcode[]>([])
   const [lastScanned, setLastScanned] = useState<DetectedBarcode[]>([])
-  const dimension = { width, height }
 
   function updateResult(results: DetectedBarcode[]) {
     setLatest(results)
@@ -25,11 +25,19 @@ function App() {
     }
   }
 
+  useLayoutEffect(() => {
+    if (!ref.current) {
+      return
+    }
+    const { width, height } = ref.current!.getBoundingClientRect()
+    setDimention({ width, height })
+  }, [ref])
+
   return (
     <div className="App">
       <Brand />
       <main className="main">
-        <div className="video-area">
+        <div className="video-area" ref={ref}>
           <div className="user-media-preview">
             <QRCodeScanner onResult={updateResult} {...dimension} />
           </div>
@@ -40,21 +48,23 @@ function App() {
             <ExactMatchToast barcode={lastScanned[0]} />
           </div>
         </div>
-        {lastScanned.length > 0 ? (
-          <div className="scan-results">
-            <h2 className="scan-results-heading">Scan results</h2>
-            <ul>
-              {lastScanned.map((barcode) => (
-                <ScanResultItem
-                  key={barcode.rawValue}
-                  barcode={lastScanned[0]}
-                />
-              ))}
-            </ul>
-          </div>
-        ) : (
-          <Instruction />
-        )}
+        <div className="results-area">
+          {lastScanned.length > 0 ? (
+            <div className="scan-results">
+              <h2 className="scan-results-heading">Scan results</h2>
+              <ul>
+                {lastScanned.map((barcode) => (
+                  <ScanResultItem
+                    key={barcode.rawValue}
+                    barcode={lastScanned[0]}
+                  />
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <Instruction />
+          )}
+        </div>
       </main>
       <Footer />
     </div>

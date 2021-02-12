@@ -3,19 +3,23 @@ import { useEffect, useState } from 'react'
 export function useUserMedia({
   width,
   height,
+  enabled,
 }: {
   width: number
   height: number
+  enabled: boolean
 }) {
   const [mediaStream, setMediaStream] = useState<MediaStream | null>(null)
 
   useEffect(() => {
+    if (!enabled) {
+      return
+    }
+
     let _mediaStream: MediaStream
     navigator.mediaDevices
       .getUserMedia({
         video: {
-          width,
-          height,
           facingMode: 'environment',
         },
         audio: false,
@@ -30,7 +34,7 @@ export function useUserMedia({
         track.stop()
       })
     }
-  }, [width, height])
+  }, [enabled, width, height])
 
   return {
     mediaStream,

@@ -1,6 +1,7 @@
 import './Button.css'
 
 interface Props {
+  type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   href?: string
   openAsNewTab?: boolean
@@ -9,7 +10,7 @@ interface Props {
 }
 
 export function Button(props: Props) {
-  const { disabled, href, openAsNewTab, children, onClick } = props
+  const { type, disabled, href, openAsNewTab, children, onClick } = props
 
   if (href) {
     const attrs = openAsNewTab
@@ -26,7 +27,12 @@ export function Button(props: Props) {
   }
 
   return (
-    <button className="button" disabled={disabled} onClick={onClick}>
+    <button
+      className="button"
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+    >
       {children}
     </button>
   )

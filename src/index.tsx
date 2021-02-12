@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import { Metric } from 'web-vitals'
 import { Onboarding } from './components/Onboarding'
 import { useAgreement } from './hooks/agreement'
-import { useBarcodeDetector } from './hooks/useBarcodeDetector'
 import reportWebVitals from './reportWebVitals'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 
@@ -11,12 +10,9 @@ const App = React.lazy(() => import('./App'))
 
 function Root() {
   const { isAgreed, agree } = useAgreement()
-  const { hasCompatibility } = useBarcodeDetector()
 
   if (!isAgreed) {
-    return (
-      <Onboarding hasCompatibility={hasCompatibility} onCompleted={agree} />
-    )
+    return <Onboarding onCompleted={agree} />
   }
 
   return (
