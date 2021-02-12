@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 export function useWindowFocus() {
-  const [active, setActive] = useState<boolean>(document.hasFocus())
+  const [active, setActive] = useState<boolean>(true)
 
   const onFocus = useCallback(() => {
     setActive(true)
