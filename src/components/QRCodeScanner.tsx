@@ -51,27 +51,35 @@ export function QRCodeScanner(props: Props) {
     )
   }
   if (error) {
-    switch (error) {
-      case ErrorReason.NotAllowedError:
-        return (
-          <div className="qr-code-scanner-error">
-            <h2>Camera is not available</h2>
-            <p>Please allow to access camera and try again.</p>
-            <p>
-              <a href="https://support.google.com/chrome/answer/2693767?co=GENIE.Platform%3DAndroid&hl=en&oco=1">
-                Get help with camera
-              </a>
-            </p>
-          </div>
-        )
-      default:
-        return (
-          <div className="qr-code-scanner-error">
-            <h2>Camera is not available</h2>
-            <p>An unexpected error occured. Please try again.</p>
-          </div>
-        )
+    let howToFix = <p>An unexpected error occured. Please try again.</p>
+    if (error === ErrorReason.NotAllowedError) {
+      howToFix = (
+        <>
+          <p>Please allow to access camera and try again.</p>
+          <p>
+            <a href="https://support.google.com/chrome/answer/2693767?co=GENIE.Platform%3DAndroid&hl=en&oco=1">
+              Get help with camera
+            </a>
+          </p>
+        </>
+      )
     }
+
+    return (
+      <div className="qr-code-scanner-error">
+        {/* @ts-ignore */}
+        <lottie-player
+          src="https://assets1.lottiefiles.com/packages/lf20_n0YWqQ.json"
+          background="transparent"
+          speed="1"
+          style={{ width: '100%', height: 180 }}
+          autoplay
+        />
+        <h2>Camera is not available</h2>
+        <p>Please allow to access camera and try again.</p>
+        {howToFix}
+      </div>
+    )
   }
 
   return (

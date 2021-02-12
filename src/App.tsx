@@ -22,7 +22,7 @@ function App() {
   function updateResult(results: DetectedBarcode[]) {
     setReady(true)
     setLatest(results)
-    if (results.length) {
+    if (results.length && results[0].rawValue) {
       setLastScanned(results)
     }
   }
