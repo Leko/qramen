@@ -2,14 +2,21 @@ import { Button } from './Button'
 import logo from '../logo.svg'
 import pkg from '../../package.json'
 import './Onboarding.css'
+import { useBrowserCompatibility } from '../hooks/browser-compatibility'
 
 interface Props {
-  hasCompatibility: boolean
   onCompleted: () => unknown
 }
 
 export function Onboarding(props: Props) {
-  const { hasCompatibility, onCompleted } = props
+  const { onCompleted } = props
+  const {
+    hasBarcodeDetector,
+    supportedQRCodeFormat,
+  } = useBrowserCompatibility()
+
+  const valid = hasBarcodeDetector && supportedQRCodeFormat
+
   return (
     <div className="onboarding">
       <header className="onboarding-heading">
@@ -28,11 +35,9 @@ export function Onboarding(props: Props) {
         <li>No need to install</li>
         <li>Works offline if you add it to your home screen</li>
       </ul>
-      {hasCompatibility ? (
+      {valid ? (
         <div className="onboarding-submit-wrap">
-          <Button disabled={!hasCompatibility} onClick={onCompleted}>
-            Start scanning
-          </Button>
+          <Button onClick={onCompleted}>Start scanning</Button>
         </div>
       ) : (
         <p className="onboarding-errors">This browser is unsupported.</p>

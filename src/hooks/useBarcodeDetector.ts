@@ -1,4 +1,5 @@
 import colorHash from 'material-color-hash'
+import { useBrowserCompatibility } from './browser-compatibility'
 
 export interface DetectedBarcode {
   boundingBox: DOMRectReadOnly
@@ -9,11 +10,14 @@ export interface DetectedBarcode {
 }
 
 export function useBarcodeDetector() {
-  const hasCompatibility = 'BarcodeDetector' in window
+  const {
+    hasBarcodeDetector,
+    supportedQRCodeFormat,
+  } = useBrowserCompatibility()
 
   type FIXME_any = any
   function detect(source: FIXME_any): Promise<DetectedBarcode[]> {
-    if (!hasCompatibility) {
+    if (!hasBarcodeDetector || !supportedQRCodeFormat) {
       throw new Error("This environment doesn't support BarcodeDetector")
     }
 
@@ -32,7 +36,6 @@ export function useBarcodeDetector() {
   }
 
   return {
-    hasCompatibility,
     detect,
   }
 }

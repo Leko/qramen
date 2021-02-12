@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { useBrowserCompatibility } from '../hooks/browser-compatibility'
 import {
   DetectedBarcode,
   useBarcodeDetector,
@@ -14,14 +15,23 @@ interface Props {
 export function QRCodeScanner(props: Props) {
   const { onResult } = props
   const videoRef = useRef<HTMLVideoElement | null>(null)
-  const { hasCompatibility, detect } = useBarcodeDetector()
+  const {
+    hasBarcodeDetector,
+    supportedQRCodeFormat,
+  } = useBrowserCompatibility()
+  const { detect } = useBarcodeDetector()
   const { mediaStream } = useUserMedia(props)
 
   useEffect(
     () => {
       let frameHandle: number
       const videoEl = videoRef.current
-      if (!mediaStream || !hasCompatibility || !videoEl) {
+      if (
+        !mediaStream ||
+        !hasBarcodeDetector ||
+        !supportedQRCodeFormat ||
+        !videoEl
+      ) {
         return
       }
       function detectloop() {
@@ -46,11 +56,15 @@ export function QRCodeScanner(props: Props) {
       }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [hasCompatibility, videoRef, mediaStream]
+    [hasBarcodeDetector, supportedQRCodeFormat, videoRef, mediaStream]
   )
 
-  if (!hasCompatibility) {
-    return <div>Your browser doesn't support BarcodeDetector</div>
+  if (!hasBarcodeDetector || !supportedQRCodeFormat) {
+    return (
+      <div>
+        Your browser doesn't support BarcodeDetector and QR code detection
+      </div>
+    )
   }
 
   return (
