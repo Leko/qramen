@@ -5,6 +5,7 @@ import {
   useBarcodeDetector,
 } from '../hooks/useBarcodeDetector'
 import { useUserMedia } from '../hooks/userMedia'
+import { useWindowFocus } from '../hooks/window'
 import './QRCodeScanner.css'
 
 interface Props {
@@ -15,12 +16,17 @@ interface Props {
 
 export function QRCodeScanner(props: Props) {
   const { width, height, onResult } = props
+  const { active } = useWindowFocus()
   const {
     hasBarcodeDetector,
     supportedQRCodeFormat,
   } = useBrowserCompatibility()
-  const { mediaStream } = useUserMedia({ width, height })
-  const { videoRef, results } = useBarcodeDetector({ mediaStream })
+  const { mediaStream } = useUserMedia({ width, height, enabled: active })
+  const { videoRef, results } = useBarcodeDetector({
+    mediaStream,
+    width,
+    height,
+  })
 
   useEffect(() => {
     onResult(results)

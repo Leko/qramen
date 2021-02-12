@@ -18,8 +18,12 @@ const worker = comlink.wrap<{
 }>(new QRCodeWorker())
 
 export function useBarcodeDetector({
+  width,
+  height,
   mediaStream,
 }: {
+  width: number
+  height: number
   mediaStream: MediaStream | null
 }) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -38,7 +42,11 @@ export function useBarcodeDetector({
         return
       }
 
-      createImageBitmap(videoEl)
+      createImageBitmap(videoEl, {
+        resizeWidth: width,
+        resizeHeight: height,
+        resizeQuality: 'low',
+      })
         .then((bmp) => worker.detectQRCodes(comlink.transfer(bmp, [bmp])))
         .then(setResults)
         .finally(() => {
@@ -50,16 +58,16 @@ export function useBarcodeDetector({
     }
 
     // Wait until the video is ready
-    videoEl.addEventListener('loadeddata', onReady, {
+    videoEl.addEventListener('playing', onReady, {
       once: true,
     })
     videoEl.srcObject = mediaStream
 
     return () => {
       cancelAnimationFrame(frameHandle)
-      videoEl.removeEventListener('loadeddata', onReady)
+      videoEl.removeEventListener('playing', onReady)
     }
-  }, [videoRef, mediaStream])
+  }, [videoRef, mediaStream, width, height])
 
   return {
     videoRef,
