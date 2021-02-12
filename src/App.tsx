@@ -26,6 +26,9 @@ function App() {
       setLastScanned(results)
     }
   }
+  function handleError(error: Error) {
+    setReady(false)
+  }
 
   useLayoutEffect(() => {
     if (!ref.current) {
@@ -41,7 +44,11 @@ function App() {
       <main className="main">
         <div className="video-area" ref={ref}>
           <div className="user-media-preview">
-            <QRCodeScanner onResult={updateResult} {...dimension} />
+            <QRCodeScanner
+              onResult={updateResult}
+              onError={handleError}
+              {...dimension}
+            />
           </div>
           {ready ? (
             <>

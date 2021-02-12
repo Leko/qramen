@@ -12,10 +12,11 @@ interface Props {
   width: number
   height: number
   onResult: (results: DetectedBarcode[]) => unknown
+  onError: (error: Error) => unknown
 }
 
 export function QRCodeScanner(props: Props) {
-  const { width, height, onResult } = props
+  const { width, height, onResult, onError } = props
   const { active } = useWindowFocus()
   const {
     hasBarcodeDetector,
@@ -35,6 +36,12 @@ export function QRCodeScanner(props: Props) {
   useEffect(() => {
     onResult(results)
   }, [onResult, results])
+  useEffect(() => {
+    if (!error) {
+      return
+    }
+    onError(new Error(error))
+  }, [onError, error])
 
   if (!hasBarcodeDetector || !supportedQRCodeFormat) {
     return (
