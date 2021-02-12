@@ -13,6 +13,14 @@
 }
 .video-area {
   position: relative;
+  flex: 3;
+}
+.results-area {
+  flex: 1;
+}
+
+.user-media-preview {
+  height: 100%;
 }
 .detection-result {
   position: absolute;

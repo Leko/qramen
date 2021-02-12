@@ -1,4 +1,3 @@
-import pkg from '../../package.json'
 import './Instruction.css'
 
 export function Instruction() {
@@ -7,11 +6,6 @@ export function Instruction() {
       <div className="instruction">
         <h2 className="instruction-title">Scan QR codes</h2>
         <p>Scan the QR code and the result will be displayed here.</p>
-      </div>
-      <div className="help">
-        <p className="help-description">
-          Something went wrong? <a href={pkg.bugs}>Report a bug</a>
-        </p>
       </div>
     </aside>
   )

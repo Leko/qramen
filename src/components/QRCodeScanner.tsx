@@ -5,6 +5,7 @@ import {
   useBarcodeDetector,
 } from '../hooks/useBarcodeDetector'
 import { useUserMedia } from '../hooks/userMedia'
+import './QRCodeScanner.css'
 
 interface Props {
   width: number
@@ -69,10 +70,10 @@ export function QRCodeScanner(props: Props) {
 
   return (
     <video
-      ref={videoRef}
-      style={{ width: props.width, height: props.height }}
       playsInline
       autoPlay
+      className="qr-code-scanner-video"
+      ref={videoRef}
     />
   )
 }
