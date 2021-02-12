@@ -14,8 +14,12 @@ export function useUserMedia({
     navigator.mediaDevices
       .getUserMedia({
         video: {
-          width,
-          height,
+          width: {
+            exact: width,
+          },
+          height: {
+            exact: height,
+          },
           facingMode: 'environment',
         },
         audio: false,

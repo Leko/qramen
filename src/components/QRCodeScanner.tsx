@@ -14,12 +14,12 @@ interface Props {
 }
 
 export function QRCodeScanner(props: Props) {
-  const { onResult } = props
+  const { width, height, onResult } = props
   const {
     hasBarcodeDetector,
     supportedQRCodeFormat,
   } = useBrowserCompatibility()
-  const { mediaStream } = useUserMedia(props)
+  const { mediaStream } = useUserMedia({ width, height })
   const { videoRef, results } = useBarcodeDetector({ mediaStream })
 
   useEffect(() => {
