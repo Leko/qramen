@@ -15,10 +15,12 @@ function App() {
   const [dimension, setDimention] = useState<{ width: number; height: number }>(
     { width: 0, height: 0 }
   )
+  const [ready, setReady] = useState(false)
   const [latest, setLatest] = useState<DetectedBarcode[]>([])
   const [lastScanned, setLastScanned] = useState<DetectedBarcode[]>([])
 
   function updateResult(results: DetectedBarcode[]) {
+    setReady(true)
     setLatest(results)
     if (results.length) {
       setLastScanned(results)
@@ -41,12 +43,16 @@ function App() {
           <div className="user-media-preview">
             <QRCodeScanner onResult={updateResult} {...dimension} />
           </div>
-          <div className="detection-result">
-            <DetectionOverlay barcodes={latest} {...dimension} />
-          </div>
-          <div className="exact-match">
-            <ExactMatchToast barcode={lastScanned[0]} />
-          </div>
+          {ready ? (
+            <>
+              <div className="detection-result">
+                <DetectionOverlay barcodes={latest} {...dimension} />
+              </div>
+              <div className="exact-match">
+                <ExactMatchToast barcode={lastScanned[0]} />
+              </div>
+            </>
+          ) : null}
         </div>
         <div className="results-area">
           {lastScanned.length > 0 ? (
@@ -61,9 +67,9 @@ function App() {
                 ))}
               </ul>
             </div>
-          ) : (
+          ) : ready ? (
             <Instruction />
-          )}
+          ) : null}
         </div>
       </main>
       <Footer />
