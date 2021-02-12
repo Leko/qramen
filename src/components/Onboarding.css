@@ -30,6 +30,10 @@
   padding-left: 24px;
 }
 
+.onboarding-tracking {
+  margin-top: 8px;
+}
+
 .onboarding-errors {
   margin-top: 24px;
   padding: 16px;

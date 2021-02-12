@@ -1,0 +1,7 @@
+.checkbox-label {
+  cursor: pointer;
+}
+
+.checkbox-label [type='checkbox'] {
+  margin-right: 8px;
+}

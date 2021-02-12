@@ -1,21 +1,38 @@
-import { Button } from './Button'
+import { FormEvent, useCallback, useState } from 'react'
 import logo from '../logo.svg'
 import pkg from '../../package.json'
-import './Onboarding.css'
 import { useBrowserCompatibility } from '../hooks/browser-compatibility'
+import { Button } from './Button'
+import { Checkbox } from './Checkbox'
+import './Onboarding.css'
 
 interface Props {
-  onCompleted: () => unknown
+  onCompleted: (allowTracking: boolean) => unknown
 }
 
 export function Onboarding(props: Props) {
   const { onCompleted } = props
+  const [allowTracking, setAllowTracking] = useState(true)
   const {
     hasBarcodeDetector,
     supportedQRCodeFormat,
   } = useBrowserCompatibility()
 
   const valid = hasBarcodeDetector && supportedQRCodeFormat
+
+  const onChangeCheck = useCallback(
+    (checked: boolean) => {
+      setAllowTracking(checked)
+    },
+    [setAllowTracking]
+  )
+  const onSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault()
+      onCompleted(allowTracking)
+    },
+    [onCompleted, allowTracking]
+  )
 
   return (
     <div className="onboarding">
@@ -35,13 +52,24 @@ export function Onboarding(props: Props) {
         <li>No need to install</li>
         <li>Works offline if you add it to your home screen</li>
       </ul>
-      {valid ? (
-        <div className="onboarding-submit-wrap">
-          <Button onClick={onCompleted}>Start scanning</Button>
+      <form onSubmit={onSubmit}>
+        <div className="onboarding-tracking">
+          <Checkbox
+            value={allowTracking}
+            onChange={onChangeCheck}
+            label={
+              'Allow anonymized performance measurement to improve this app'
+            }
+          />
         </div>
-      ) : (
-        <p className="onboarding-errors">This browser is unsupported.</p>
-      )}
+        {valid ? (
+          <div className="onboarding-submit-wrap">
+            <Button type="submit">Start scanning</Button>
+          </div>
+        ) : (
+          <p className="onboarding-errors">This browser is unsupported.</p>
+        )}
+      </form>
     </div>
   )
 }
